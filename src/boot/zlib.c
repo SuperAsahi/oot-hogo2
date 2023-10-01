@@ -1207,9 +1207,6 @@ struct decoder
 	unsigned char  *buf_limit;   /* points to end of scannable area  *
 	                              * of buf; this prevents yaz parser *
 	                              * from overflowing                 */
-#if MAJORA
-	unsigned char  *dst_end;     /* end of decompressed block        */
-#endif
 };
 
 static struct decoder dec;
