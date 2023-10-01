@@ -29,14 +29,11 @@ void* Yaz0_FirstDMA(void);
 void* Yaz0_NextDMA(u8* curSrcPos);
 void Yaz0_DecompressImpl(Yaz0Header* hdr, u8* dst);
 void Yaz0_Decompress(uintptr_t romStart, u8* dst, size_t size);
-#endif
-#ifdef COMPRESSION_LZO
+#elif COMPRESSION_LZO
 void Lzo_Decompress(uintptr_t romStart, u8* dst, size_t size);
-#endif
-#ifdef COMPRESSION_APLIB
+#elif COMPRESSION_APLIB
 void ApLib_Decompress(uintptr_t romStart, u8* dst, size_t size);
-#endif
-#ifdef COMPRESSION_ZLIB
+#elif COMPRESSION_ZLIB
 void Zlib_Decompress(uintptr_t romStart, u8* dst, size_t size);
 #endif
 void Locale_Init(void);

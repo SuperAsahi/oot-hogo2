@@ -379,14 +379,11 @@ void DmaMgr_ProcessRequest(DmaRequest* req) {
                 osSetThreadPri(NULL, THREAD_PRI_DMAMGR_LOW);
 #ifdef COMPRESSION_YAZ
                 Yaz0_Decompress(romStart, ram, romSize);
-#endif
-#ifdef COMPRESSION_LZO
+#elif COMPRESSION_LZO
                 Lzo_Decompress(romStart, ram, romSize);
-#endif
-#ifdef COMPRESSION_APLIB
+#elif COMPRESSION_APLIB
                 ApLib_Decompress(romStart, ram, romSize);
-#endif
-#ifdef COMPRESSION_ZLIB
+#elif COMPRESSION_ZLIB
                 Zlib_Decompress(romStart, ram, romSize);
 #endif
                 osSetThreadPri(NULL, THREAD_PRI_DMAMGR);
