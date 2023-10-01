@@ -1,11 +1,7 @@
 /* <z64.me> oot style zlib decompression using intermediate buffer */
 
-// How many kibibytes to allocate
-#define KIB 32
-
-#include "global.h"
-#include "terminal.h"
 #include "ultra64.h"
+#include "config.h"
 
 #pragma GCC push_options
 #pragma GCC optimize ("Ofast")
