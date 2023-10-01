@@ -24,10 +24,21 @@ void Main_ThreadEntry(void* arg);
 void Idle_ThreadEntry(void* arg);
 void ViConfig_UpdateVi(u32 black);
 void ViConfig_UpdateBlack(void);
+#ifdef COMPRESSION_YAZ
 void* Yaz0_FirstDMA(void);
 void* Yaz0_NextDMA(u8* curSrcPos);
 void Yaz0_DecompressImpl(Yaz0Header* hdr, u8* dst);
 void Yaz0_Decompress(uintptr_t romStart, u8* dst, size_t size);
+#endif
+#ifdef COMPRESSION_LZO
+void Lzo_Decompress(uintptr_t romStart, u8* dst, size_t size);
+#endif
+#ifdef COMPRESSION_APLIB
+void ApLib_Decompress(uintptr_t romStart, u8* dst, size_t size);
+#endif
+#ifdef COMPRESSION_ZLIB
+void Zlib_Decompress(uintptr_t romStart, u8* dst, size_t size);
+#endif
 void Locale_Init(void);
 void Locale_ResetRegion(void);
 u32 func_80001F48(void);

@@ -1,5 +1,8 @@
 /* <z64.me> adapted from lzo1x_d.ch */
 
+#pragma GCC push_options
+#pragma GCC optimize ("Ofast")
+
 /* negative indexing distance */
 #define NINDEX 2
 
@@ -15,9 +18,6 @@ struct decoder {
     unsigned char* buf_limit; /* points to end of scannable area  *
                                * of buf; this prevents yaz parser *
                                * from overflowing                 */
-#if MAJORA
-    unsigned char* dst_end; /* end of decompressed block        */
-#endif
 };
 
 static struct decoder dec;
@@ -65,11 +65,11 @@ static unsigned char* refill(unsigned char* ip) {
     return ip;
 }
 
-void Yaz0_Decompress(unsigned int pstart /* physical rom offset of file      */
-                     ,
-                     unsigned char* op /* destination of decompressed data */
-                     ,
-                     unsigned int sz /* size of compressed file          */
+void Lzo_Decompress(unsigned int pstart /* physical rom offset of file      */
+                    ,
+                    unsigned char* op /* destination of decompressed data */
+                    ,
+                    unsigned int sz /* size of compressed file          */
 ) {
     unsigned char* m_pos;
     unsigned char* ip;
@@ -209,10 +209,5 @@ void Yaz0_Decompress(unsigned int pstart /* physical rom offset of file      */
         }
     }
 L_done:
-    do {
-    } while (0);
-#if MAJORA
-    dec.dst_end = op;
-    dec.buf_end = 0;
-#endif
-}
+    do { } while (0); }
+#pragma GCC pop_options
