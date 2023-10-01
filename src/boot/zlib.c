@@ -1195,7 +1195,7 @@ static int gen_huffman_table(unsigned int symbols,
 
 struct decoder
 {
-	unsigned char   buf[1024*KIB];   /* intermediate buffer for loading  */
+	unsigned char   buf[1024*DEFLATE_BUFFER];   /* intermediate buffer for loading  */
 	unsigned char  *buf_end;     /* pointer that exists for the sole *
 	                              * purpose of getting size of `buf` */
 	unsigned        pstart;      /* offset of next read from rom     */

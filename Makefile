@@ -217,12 +217,11 @@ $(shell mkdir -p build/baserom build/assets/text $(foreach dir,$(SRC_DIRS) $(UND
 build/src/libultra/libc/ll.o: OPTFLAGS := -Ofast
 build/src/%.o: CC := $(CC) -fexec-charset=euc-jp
 
-
+# For wii virtual console the lest optimisation the better as VC really doesn't suffer from slowdown
 ifeq ($(TARGET),wii)
 CFLAGS += -DCONSOLE_WIIVC -fno-reorder-blocks -fno-optimize-sibling-calls
 CPPFLAGS += -DCONSOLE_WIIVC -fno-reorder-blocks -fno-optimize-sibling-calls
-build/src/overlays/actors/ovl_Item_B_Heart/%.o: OPTFLAGS := -O0
-build/src/overlays/actors/ovl_Bg_Mori_Hineri/%.o: OPTFLAGS := -O0
+build/src/overlays/actors/%.o: OPTFLAGS := -O0
 endif
 
 #### Main Targets ###
