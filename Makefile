@@ -19,14 +19,14 @@ DEBUG_BUILD ?= 1
 #            Valid compression algorithms are yaz, lzo, zlib, and aplib						#
 #===========================================================================================#
 #
-#	Yaz0 is the default compression for OoT its reverse engineered and proprietary.
+#	Yaz0 is the default compression for OoT. It's reverse engineered and proprietary.
 #
-#	Lzo is fast to compress and decompress but the compression ratio is better than yaz.
+#	Lzo is fast to compress and decompress but, the compression ratio is better than yaz.
 #
-#	Zlib (also called gzip and lib deflate) compresses the best but decompresses
+#	Zlib (also called gzip and libdeflate) compresses the best but, decompresses
 #		slower than the others.
 #
-#	Aplib is painfully slow to compress but is has a similar ratio to zlib however
+#	Aplib is painfully slow to compress but is has a similar ratio to zlib however,
 #		decompression is twice as fast as zlib.
 #
 #===========================================================================================#
