@@ -25,6 +25,9 @@
 #define DEBUG_HEAP_SIZE 0x600000
 
 /**** [NO CLIP] ****/
+#define ENABLE_L_TO_LEVITATE
+
+/**** [NO CLIP] ****/
 #define ENABLE_NO_CLIP
 
 /**** [INPUT DISPLAY] ****/

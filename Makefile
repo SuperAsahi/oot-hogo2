@@ -12,22 +12,25 @@ COMPILER ?= gcc
 # If DEBUG_BUILD is 0, compile with ``RELEASE_ROM`` defined
 DEBUG_BUILD ?= 1
 
-# Valid compression algorithms are yaz, lzo and aplib
+# Valid compression algorithms are yaz, lz4, lzo and aplib
 COMPRESSION ?= yaz
+LZ4_BLOCK_SIZE ?= 64
 
 ifeq ($(COMPRESSION),lzo)
   CFLAGS += -DCOMPRESSION_LZO
   CPPFLAGS += -DCOMPRESSION_LZO
-endif
 
-ifeq ($(COMPRESSION),yaz)
+else ifeq ($(COMPRESSION),yaz)
   CFLAGS += -DCOMPRESSION_YAZ
   CPPFLAGS += -DCOMPRESSION_YAZ
-endif
 
-ifeq ($(COMPRESSION),aplib)
+else ifeq ($(COMPRESSION),aplib)
   CFLAGS += -DCOMPRESSION_APLIB
   CPPFLAGS += -DCOMPRESSION_APLIB
+
+else ifeq ($(COMPRESSION),lz4)
+  CFLAGS += -DCOMPRESSION_LZ4 -DLZ4_BLOCK_SIZE_KIB=$(LZ4_BLOCK_SIZE)
+  CPPFLAGS += -DCOMPRESSION_LZ4 -DLZ4_BLOCK_SIZE_KIB=$(LZ4_BLOCK_SIZE)
 endif
 
 CFLAGS ?=
@@ -110,7 +113,7 @@ AS         := $(MIPS_BINUTILS_PREFIX)as
 LD         := $(MIPS_BINUTILS_PREFIX)ld
 OBJCOPY    := $(MIPS_BINUTILS_PREFIX)objcopy
 OBJDUMP    := $(MIPS_BINUTILS_PREFIX)objdump
-EMULATOR   ?= 
+EMULATOR   ?= $(ARES)
 EMU_FLAGS  ?= 
 
 INC        := -Iinclude -Isrc -Ibuild -I.
@@ -127,6 +130,7 @@ FADO       := tools/fado/fado.elf
 
 ifeq ($(COMPILER),gcc)
   OPTFLAGS := -Os -ffast-math -fno-unsafe-math-optimizations
+#   OPTFLAGS := -Og -g -g3 -ffast-math -fno-unsafe-math-optimizations
 else
   OPTFLAGS := -O2
 endif
@@ -149,7 +153,8 @@ OBJDUMP_FLAGS := -d -r -z -Mreg-names=32
 #### Files ####
 
 # ROM image
-ROM  := HackerOoT.z64
+ROM_NAME ?= HackerOoT
+ROM  := $(ROM_NAME).z64
 ELF  := $(ROM:.z64=.elf)
 ROMC := $(ROM:.z64=_compressed.z64)
 WAD  := $(ROM:.z64=.wad)
@@ -231,7 +236,6 @@ setup:
 	python3 fixbaserom.py
 	python3 extract_baserom.py
 	python3 extract_assets.py -j$(N_THREADS)
-	python3 tools/daf/daf.py -a -p ./
 
 run: $(ROM)
 ifeq ($(EMULATOR),)
@@ -239,8 +243,13 @@ ifeq ($(EMULATOR),)
 endif
 	$(EMULATOR) $(EMU_FLAGS) $<
 
+runc: $(ROMC)
+ifeq ($(EMULATOR),)
+	$(error Emulator path not set. Set EMULATOR in the Makefile or define it as an environment variable)
+endif
+	$(EMULATOR) $(EMU_FLAGS) $<
 
-.PHONY: all clean setup run distclean assetclean compress wad rebuildtools
+.PHONY: all clean setup run distclean assetclean compress wad rebuildtools runc
 
 #### Various Recipes ####
 
