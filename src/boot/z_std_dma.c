@@ -377,7 +377,15 @@ void DmaMgr_ProcessRequest(DmaRequest* req) {
                 // Reduce the thread priority and decompress the file, the decompression routine handles the DMA
                 // in chunks. Restores the thread priority when done.
                 osSetThreadPri(NULL, THREAD_PRI_DMAMGR_LOW);
+#ifdef COMPRESSION_YAZ
                 Yaz0_Decompress(romStart, ram, romSize);
+#elif COMPRESSION_LZO
+                Lzo_Decompress(romStart, ram, romSize);
+#elif COMPRESSION_APLIB
+                ApLib_Decompress(romStart, ram, romSize);
+#elif COMPRESSION_ZLIB
+                Zlib_Decompress(romStart, ram, romSize);
+#endif
                 osSetThreadPri(NULL, THREAD_PRI_DMAMGR);
                 found = true;
 

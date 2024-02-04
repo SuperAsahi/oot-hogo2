@@ -10,6 +10,10 @@
  *
  * http://www.ibsensoftware.com/
  */
+
+#pragma GCC push_options
+#pragma GCC optimize ("Ofast")
+
 static struct decoder dec;
 
 /* block copy, with desired overlapping behavior */
@@ -33,9 +37,6 @@ struct decoder {
     unsigned char* buf_limit; /* points to end of scannable area  *
                                * of buf; this prevents yaz parser *
                                * from overflowing                 */
-#if MAJORA
-    unsigned char* dst_end; /* end of decompressed block        */
-#endif
 };
 static void* refill(unsigned char* ip) {
     unsigned offset;
@@ -211,8 +212,10 @@ static inline void* aP_depack(void* source, unsigned char* destination) {
     return destination;
 }
 
-void Yaz0_Decompress(unsigned rom, unsigned char* dst, unsigned compSz) {
+void ApLib_Decompress(unsigned rom, unsigned char* dst, unsigned compSz) {
     dec.pstart = rom;
     dec.buf_end = dec.buf + sizeof(dec.buf);
     dst = aP_depack(dec.buf_end, dst);
 }
+
+#pragma GCC pop_options

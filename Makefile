@@ -9,25 +9,45 @@ SHELL = /bin/bash
 # If COMPILER is "gcc", compile with GCC.
 COMPILER ?= gcc
 
+# Target the n64 or wii if in doubt use n64
+TARGET ?= n64
+
 # If DEBUG_BUILD is 0, compile with ``RELEASE_ROM`` defined
 DEBUG_BUILD ?= 1
 
-# Valid compression algorithms are yaz, lzo and aplib
+#===========================================================================================#
+#            Valid compression algorithms are yaz, lzo, zlib, and aplib						#
+#===========================================================================================#
+#
+#	Yaz0 is the default compression for OoT. It's reverse engineered and proprietary.
+#
+#	Lzo is fast to compress and decompress but, the compression ratio is better than yaz.
+#
+#	Zlib (also called gzip and libdeflate) compresses the best but, decompresses
+#		slower than the others.
+#
+#	Aplib is painfully slow to compress but is has a similar ratio to zlib however,
+#		decompression is twice as fast as zlib.
+#
+#===========================================================================================#
 COMPRESSION ?= yaz
-
-ifeq ($(COMPRESSION),lzo)
-  CFLAGS += -DCOMPRESSION_LZO
-  CPPFLAGS += -DCOMPRESSION_LZO
-endif
 
 ifeq ($(COMPRESSION),yaz)
   CFLAGS += -DCOMPRESSION_YAZ
   CPPFLAGS += -DCOMPRESSION_YAZ
-endif
 
-ifeq ($(COMPRESSION),aplib)
+else ifeq ($(COMPRESSION),lzo)
+  CFLAGS += -DCOMPRESSION_LZO
+  CPPFLAGS += -DCOMPRESSION_LZO
+
+else ifeq ($(COMPRESSION),zlib)
+  CFLAGS += -DCOMPRESSION_ZLIB
+  CPPFLAGS += -DCOMPRESSION_ZLIB
+
+else ifeq ($(COMPRESSION),aplib)
   CFLAGS += -DCOMPRESSION_APLIB
   CPPFLAGS += -DCOMPRESSION_APLIB
+
 endif
 
 CFLAGS ?=
@@ -126,7 +146,12 @@ ZAPD       := tools/ZAPD/ZAPD.out
 FADO       := tools/fado/fado.elf
 
 ifeq ($(COMPILER),gcc)
-  OPTFLAGS := -Os -ffast-math -fno-unsafe-math-optimizations
+	ifeq ($(TARGET),n64)
+ OPTFLAGS := -Os
+	else
+ OPTFLAGS := -O1
+	endif
+ OPTFLAGS += -ffast-math -fno-unsafe-math-optimizations
 else
   OPTFLAGS := -O2
 endif
@@ -150,6 +175,7 @@ OBJDUMP_FLAGS := -d -r -z -Mreg-names=32
 
 # ROM image
 ROM  := HackerOoT.z64
+NAME := $(ROM:.z64='')
 ELF  := $(ROM:.z64=.elf)
 ROMC := $(ROM:.z64=_compressed.z64)
 WAD  := $(ROM:.z64=.wad)
@@ -188,14 +214,15 @@ TEXTURE_FILES_OUT := $(foreach f,$(TEXTURE_FILES_PNG:.png=.inc.c),build/$f) \
 
 # create build directories
 $(shell mkdir -p build/baserom build/assets/text $(foreach dir,$(SRC_DIRS) $(UNDECOMPILED_DATA_DIRS) $(ASSET_BIN_DIRS),build/$(dir)))
-
 build/src/libultra/libc/ll.o: OPTFLAGS := -Ofast
 build/src/%.o: CC := $(CC) -fexec-charset=euc-jp
 
-build/src/overlays/actors/ovl_Item_Shield/%.o: OPTFLAGS := -O2
-build/src/overlays/actors/ovl_En_Part/%.o: OPTFLAGS := -O2
-build/src/overlays/actors/ovl_Item_B_Heart/%.o: OPTFLAGS := -O0
-build/src/overlays/actors/ovl_Bg_Mori_Hineri/%.o: OPTFLAGS := -O0
+# For wii virtual console the lest optimisation the better as VC really doesn't suffer from slowdown
+ifeq ($(TARGET),wii)
+CFLAGS += -DCONSOLE_WIIVC -fno-reorder-blocks -fno-optimize-sibling-calls
+CPPFLAGS += -DCONSOLE_WIIVC -fno-reorder-blocks -fno-optimize-sibling-calls
+build/src/overlays/actors/%.o: OPTFLAGS := -O0
+endif
 
 #### Main Targets ###
 
@@ -204,9 +231,10 @@ all: $(ROM)
 compress: $(ROMC)
 
 wad:
-	$(MAKE) compress CFLAGS="-DCONSOLE_WIIVC $(CFLAGS) -fno-reorder-blocks -fno-optimize-sibling-calls" CPPFLAGS="-DCONSOLE_WIIVC $(CPPFLAGS)"
+	$(warning --------------------------------------->Be sure to make clean<---------------------------------------)
+	$(MAKE) compress TARGET=wii
 	@echo 45e | tools/gzinject/gzinject -a genkey -k common-key.bin >/dev/null
-	tools/gzinject/gzinject -a inject -r 1 -k common-key.bin -w basewad.wad -m $(ROMC) -o $(WAD) -t "HackerOoT" -i NHOE -p tools/gzinject/patches/NACE.gzi -p tools/gzinject/patches/gz_default_remap.gzi
+	tools/gzinject/gzinject -a inject -r 1 -k common-key.bin -w basewad.wad -m $(ROMC) -o $(WAD) -t $(NAME) -i NHOE -p tools/gzinject/patches/NACE.gzi -p tools/gzinject/patches/gz_default_remap.gzi
 	$(RM) -r wadextract/ common-key.bin
 
 clean:
