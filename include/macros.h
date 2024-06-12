@@ -1,6 +1,8 @@
 #ifndef MACROS_H
 #define MACROS_H
 
+#include "config.h"
+
 #ifndef AVOID_UB
 #define BAD_RETURN(type) type
 #else
@@ -124,7 +126,15 @@
 #define PRINTF(format, ...) (void)0
 #endif
 
-#if IS_DEBUG
+#if ARE_GAME_PRINTF_ENABLED
+#define PRINTF2 osSyncPrintf
+#elif IDO_PRINTF_WORKAROUND
+#define PRINTF2(args) (void)0
+#else
+#define PRINTF2(format, ...) (void)0
+#endif
+
+#if ARE_GAME_LOGS_ENABLED
 #define LOG(exp, value, format, file, line)         \
     do {                                            \
         LogUtils_LogThreadId(file, line);           \

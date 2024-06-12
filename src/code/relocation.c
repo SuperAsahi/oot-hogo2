@@ -63,9 +63,9 @@ void Overlay_Relocate(void* allocatedRamAddr, OverlayRelocationSection* ovlReloc
     s32 pad;
 
     if (gOverlayLogSeverity >= 3) {
-        PRINTF("DoRelocation(%08x, %08x, %08x)\n", allocatedRamAddr, ovlRelocs, vramStart);
-        PRINTF("text=%08x, data=%08x, rodata=%08x, bss=%08x\n", ovlRelocs->textSize, ovlRelocs->dataSize,
-               ovlRelocs->rodataSize, ovlRelocs->bssSize);
+        PRINTF2("DoRelocation(%08x, %08x, %08x)\n", allocatedRamAddr, ovlRelocs, vramStart);
+        PRINTF2("text=%08x, data=%08x, rodata=%08x, bss=%08x\n", ovlRelocs->textSize, ovlRelocs->dataSize,
+                ovlRelocs->rodataSize, ovlRelocs->bssSize);
     }
 
     sections[RELOC_SECTION_NULL] = 0;
@@ -153,9 +153,9 @@ void Overlay_Relocate(void* allocatedRamAddr, OverlayRelocationSection* ovlReloc
                 FALLTHROUGH;
             case R_MIPS_LO16 << RELOC_TYPE_SHIFT:
                 if (gOverlayLogSeverity >= 3) {
-                    PRINTF("%02d %08x %08x %08x ", dbg, relocDataP, relocatedValue, relocatedAddress);
-                    PRINTF(" %08x %08x %08x %08x\n", (uintptr_t)relocDataP + (uintptr_t)vramStart - allocu32, relocData,
-                           unrelocatedAddress, relocOffset);
+                    PRINTF2("%02d %08x %08x %08x ", dbg, relocDataP, relocatedValue, relocatedAddress);
+                    PRINTF2(" %08x %08x %08x %08x\n", (uintptr_t)relocDataP + (uintptr_t)vramStart - allocu32,
+                            relocData, unrelocatedAddress, relocOffset);
                 }
                 // Adding a break prevents matching
         }
