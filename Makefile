@@ -9,7 +9,7 @@ SHELL = /bin/bash
 # currently, GCC is the only supported compiler
 COMPILER := gcc
 # MIPS ABI, can be one of "32", "n32" or "eabi"
-ABI := 32
+ABI := eabi
 
 # Target game version. Currently only the following version is supported:
 #   gc-eu-mq       GameCube Europe/PAL Master Quest
