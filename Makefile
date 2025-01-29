@@ -50,7 +50,7 @@ DEBUG_OBJECTS ?= 0
 # In nearly all cases, not having 'mips-linux-gnu-*' binaries on the PATH indicates missing dependencies.
 MIPS_BINUTILS_PREFIX ?= mips-linux-gnu-
 # Emulator w/ flags for 'make run'.
-N64_EMULATOR ?=
+N64_EMULATOR ?=/usr/bin/parallel-launcher
 # Set to override game region in the ROM header (options: JP, US, EU). This can be used to build a fake US version
 # of the debug ROM for better emulator compatibility, or to build US versions of NTSC N64 ROMs.
 # REGION ?= US
@@ -260,7 +260,7 @@ endif
 ifeq ($(origin PACKAGE_AUTHOR), undefined)
   PACKAGE_AUTHOR := "$(shell git config --get user.name | tr -d '\n' | sed 's/\"/\\\"/g')"
   ifeq ($(PACKAGE_AUTHOR),"")
-    PACKAGE_AUTHOR := "Unknown author"
+    PACKAGE_AUTHOR := "Asahi64"
   endif
 endif
 

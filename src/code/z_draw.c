@@ -324,6 +324,7 @@ DrawItemTableEntry sDrawItemTable[] = {
     { GetItem_DrawSkullToken, { gGiSkulltulaTokenDL, gGiSkulltulaTokenFlameDL } },
     // din's fire, OBJECT_GI_GODDESS
     { GetItem_DrawMagicSpell, { gGiMagicSpellDiamondDL, gGiDinsFireColorDL, gGiMagicSpellOrbDL } },
+    // { GetItem_DrawEggOrMedallion, { gGiFireMedallionFaceDL, gGiMedallionDL } },
     // farore's wind, OBJECT_GI_GODDESS
     { GetItem_DrawMagicSpell, { gGiMagicSpellDiamondDL, gGiFaroresWindColorDL, gGiMagicSpellOrbDL } },
     // nayru's Love, OBJECT_GI_GODDESS

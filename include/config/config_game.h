@@ -18,7 +18,7 @@
 #define ENABLE_MEMPAK false
 
 // Configure dialogue print speed (1 is vanilla)
-// #define DIALOGUE_PRINT_SPEED 2
+#define DIALOGUE_PRINT_SPEED 2
 
 // Configure block push speed multiplier
 #define BLOCK_PUSH_SPEED 1.0f
