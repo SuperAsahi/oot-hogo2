@@ -10775,6 +10775,16 @@ beginseg
     number 6
 endseg
 
+// My added stuff here
+
+beginseg
+    name "object_gi_darkrelic"
+    compress
+    romalign 0x1000
+    include "$(BUILD_DIR)/assets/objects/object_gi_darkrelic/object_gi_darkrelic.o"
+    number 6
+endseg
+
 beginseg
     name "g_pn_01"
     compress

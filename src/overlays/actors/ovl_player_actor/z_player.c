@@ -696,7 +696,9 @@ static GetItemEntry sGetItemTable[] = {
     // GI_SKULL_TOKEN
     GET_ITEM(ITEM_SKULL_TOKEN, OBJECT_GI_SUTARU, GID_SKULL_TOKEN, 0xB4, 0x80, CHEST_ANIM_SHORT),
     // GI_DINS_FIRE
-    GET_ITEM(ITEM_DINS_FIRE, OBJECT_GI_GODDESS, GID_DINS_FIRE, 0xAD, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_DINS_FIRE, OBJECT_GI_DARKRELIC, GID_DINS_FIRE, 0xAD, 0x80, CHEST_ANIM_SHORT),
+    //GET_ITEM(ITEM_DINS_FIRE, OBJECT_GI_GODDESS, GID_DINS_FIRE, 0xAD, 0x80, CHEST_ANIM_LONG),
+    // GET_ITEM(ITEM_DINS_FIRE, OBJECT_GI_GODDESS, GID_DINS_FIRE, 0xAD, 0x80, CHEST_ANIM_SHORT),
     // GI_FARORES_WIND
     GET_ITEM(ITEM_FARORES_WIND, OBJECT_GI_GODDESS, GID_FARORES_WIND, 0xAE, 0x80, CHEST_ANIM_LONG),
     // GI_NAYRUS_LOVE
@@ -3522,6 +3524,12 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                 // Prevent some items from being used if player is out of ammo.
                 // Also prevent explosives from being used if there are 3 or more active (outside of bombchu bowling)
                 Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
+                // I added this
+            } else if (itemAction == PLAYER_IA_DINS_FIRE) {
+                //Player_TryFeatherJump(this,play);
+                //Print_Screen(0, "The rift is closing...");
+                //Print_Screen(this, 3, 3, COLOR_WHITE, "test");
+                Actor_PlaySfx(&this->actor, NA_SE_EN_GOLON_GOOD_BIG); 
             } else if (itemAction == PLAYER_IA_LENS_OF_TRUTH) {
                 // Handle Lens of Truth
                 if (Magic_RequestChange(play, 0, MAGIC_CONSUME_LENS)) {

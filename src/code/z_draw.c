@@ -78,6 +78,8 @@
 #include "assets/objects/object_gi_sword_1/object_gi_sword_1.h"
 #include "assets/objects/object_st/object_st.h"
 
+#include "assets/objects/object_gi_darkrelic/object_gi_darkrelic.h"
+
 // "Get Item" Model Draw Functions
 void GetItem_DrawMaskOrBombchu(PlayState* play, s16 drawId);
 void GetItem_DrawSoldOut(PlayState* play, s16 drawId);
@@ -323,7 +325,8 @@ DrawItemTableEntry sDrawItemTable[] = {
     // skulltula token, OBJECT_GI_SUTARU
     { GetItem_DrawSkullToken, { gGiSkulltulaTokenDL, gGiSkulltulaTokenFlameDL } },
     // din's fire, OBJECT_GI_GODDESS
-    { GetItem_DrawMagicSpell, { gGiMagicSpellDiamondDL, gGiDinsFireColorDL, gGiMagicSpellOrbDL } },
+    //{ GetItem_DrawMagicSpell, { gGiMagicSpellDiamondDL, gGiDinsFireColorDL, gGiMagicSpellOrbDL } },
+    { GetItem_DrawOpa0, { gGiDarkRelicDL } },
     // { GetItem_DrawEggOrMedallion, { gGiFireMedallionFaceDL, gGiMedallionDL } },
     // farore's wind, OBJECT_GI_GODDESS
     { GetItem_DrawMagicSpell, { gGiMagicSpellDiamondDL, gGiFaroresWindColorDL, gGiMagicSpellOrbDL } },

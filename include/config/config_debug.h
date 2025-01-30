@@ -67,7 +67,7 @@
 /**
  * Enable DMA print at boot
 */
-#define ENABLE_DMA_PRINTF false
+#define ENABLE_DMA_PRINTF true
 
 /**
  * Include example scene
