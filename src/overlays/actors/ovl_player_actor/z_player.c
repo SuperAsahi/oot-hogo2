@@ -3529,7 +3529,70 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                 //Player_TryFeatherJump(this,play);
                 //Print_Screen(0, "The rift is closing...");
                 //Print_Screen(this, 3, 3, COLOR_WHITE, "test");
-                Actor_PlaySfx(&this->actor, NA_SE_EN_GOLON_GOOD_BIG); 
+                Actor_PlaySfx(&this->actor, NA_SE_EN_GOLON_GOOD_BIG);
+
+
+
+            } else if (itemAction == PLAYER_IA_FARORES_WIND) {
+                //Player_TryFeatherJump(this,play);
+                //Print_Screen(0, "The rift is closing...");
+                //Print_Screen(this, 3, 3, COLOR_WHITE, "test");
+
+
+/*
+
+                // Handle Deku Nuts
+                if (AMMO(ITEM_DEKU_NUT) != 0) {
+                    func_8083C61C(play, this);
+                } else {
+                    Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
+                }
+
+
+                Player_SetupAction(play, this, Player_Action_8084E604, 0);
+                Player_AnimPlayOnce(play, this, &gPlayerAnim_link_normal_light_bom);
+*/
+    //if (LinkAnimation_Update(play, &this->skelAnime)) {
+        //func_8083A098(this, &gPlayerAnim_link_normal_light_bom_end, play);
+    //} else if (LinkAnimation_OnFrame(&this->skelAnime, 3.0f))
+    {
+        //Player_SetupAction(play, this, Player_Action_8084E604, 0);
+        //LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, segment, sWaterSpeedFactor);
+        Player_AnimPlayOnce(play, this, &gPlayerAnim_link_normal_landing);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->bodyPartsPos[PLAYER_BODYPART_TORSO].x,
+                    this->bodyPartsPos[PLAYER_BODYPART_TORSO].y, this->bodyPartsPos[PLAYER_BODYPART_TORSO].z, 4000,
+                    this->actor.shape.rot.y, 0, 0);
+        Player_PlayVoiceSfx(this, NA_SE_VO_LI_SWORD_N);
+    }
+
+    //Player_DecelerateToZero(this);
+
+
+/*
+
+
+                    if (LinkAnimation_Update(play, &this->skelAnime)) {
+        func_8083A098(this, &gPlayerAnim_link_normal_light_bom_end, play);
+    } else if (LinkAnimation_OnFrame(&this->skelAnime, 3.0f)) {
+        Inventory_ChangeAmmo(ITEM_DEKU_NUT, -1);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, this->bodyPartsPos[PLAYER_BODYPART_R_HAND].x,
+                    this->bodyPartsPos[PLAYER_BODYPART_R_HAND].y, this->bodyPartsPos[PLAYER_BODYPART_R_HAND].z, 4000,
+                    this->actor.shape.rot.y, 0, ARROW_NUT);
+        Player_PlayVoiceSfx(this, NA_SE_VO_LI_SWORD_N);
+    }
+
+    Player_DecelerateToZero(this);
+
+*/
+
+            } else if (itemAction == PLAYER_IA_NAYRUS_LOVE) {
+
+                // Whatever Item James wants to make
+                
+                
+
+
+
             } else if (itemAction == PLAYER_IA_LENS_OF_TRUTH) {
                 // Handle Lens of Truth
                 if (Magic_RequestChange(play, 0, MAGIC_CONSUME_LENS)) {
